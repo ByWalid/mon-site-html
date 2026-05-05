@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RISE UP — Discipline. Bien-être. Force.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;700&family=Italiana&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --cream: #ede8dd;
+    --green: #2d6a4f;
+    --green-light: #52b788;
+    --green-neon: #74d7a3;
+    --gold: #c9a84c;
+    --red: #e63946;
+    --gray: #3a3a3a;
+    --gray-light: #888;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: var(–black);
+color: var(–white);
+font-family: ‘Space Grotesk’, sans-serif;
+overflow-x: hidden;
+cursor: none;
+}
+
+/* Custom cursor */
+.cursor {
+width: 12px; height: 12px;
+background: var(–green-neon);
+border-radius: 50%;
+position: fixed;
+pointer-events: none;
+z-index: 9999;
+transition: transform 0.15s ease, width 0.2s, height 0.2s;
+mix-blend-mode: difference;
+}
+.cursor-trail {
+width: 32px; height: 32px;
+border: 1px solid var(–green-neon);
+border-radius: 50%;
+position: fixed;
+pointer-events: none;
+z-index: 9998;
+transition: all 0.08s linear;
+mix-blend-mode: difference;
+}
+
+/* NOISE OVERLAY */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 9000;
+opacity: 0.4;
+}
+
+/* NAV */
+nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 1000;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 60px;
+background: transparent;
+transition: background 0.4s;
+}
+nav.scrolled {
+background: rgba(10,10,10,0.95);
+backdrop-filter: blur(10px);
+border-bottom: 1px solid rgba(82,183,136,0.2);
+}
+.nav-logo {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 2rem;
+letter-spacing: 4px;
+color: var(–green-neon);
+text-decoration: none;
+}
+.nav-links {
+display: flex;
+gap: 40px;
+list-style: none;
+}
+.nav-links a {
+color: var(–white);
+text-decoration: none;
+font-size: 0.8rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+opacity: 0.7;
+transition: opacity 0.2s, color 0.2s;
+}
+.nav-links a:hover { opacity: 1; color: var(–green-neon); }
+.nav-cta {
+background: var(–green);
+color: var(–white) !important;
+padding: 10px 24px;
+border-radius: 2px;
+opacity: 1 !important;
+transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(–green-light) !important; }
+
+/* HERO */
+#hero {
+height: 100vh;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+}
+.hero-bg {
+position: absolute;
+inset: 0;
+background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(45,106,79,0.25) 0%, transparent 70%),
+radial-gradient(ellipse 40% 40% at 80% 80%, rgba(116,215,163,0.08) 0%, transparent 60%);
+}
+.hero-lines {
+position: absolute;
+inset: 0;
+background-image: repeating-linear-gradient(
+90deg,
+rgba(255,255,255,0.015) 0px,
+rgba(255,255,255,0.015) 1px,
+transparent 1px,
+transparent 80px
+);
+}
+.hero-content {
+text-align: center;
+z-index: 2;
+padding: 0 20px;
+}
+.hero-eyebrow {
+font-size: 0.75rem;
+letter-spacing: 6px;
+text-transform: uppercase;
+color: var(–green-neon);
+margin-bottom: 24px;
+opacity: 0;
+animation: fadeUp 0.8s 0.3s forwards;
+}
+.hero-title {
+font-family: ‘Bebas Neue’, cursive;
+font-size: clamp(6rem, 18vw, 16rem);
+line-height: 0.85;
+letter-spacing: -2px;
+color: var(–white);
+opacity: 0;
+animation: fadeUp 0.9s 0.5s forwards;
+position: relative;
+}
+.hero-title span {
+color: var(–green-neon);
+display: block;
+}
+.hero-sub {
+font-size: clamp(1rem, 2vw, 1.3rem);
+color: var(–gray-light);
+margin-top: 24px;
+max-width: 500px;
+margin-left: auto;
+margin-right: auto;
+line-height: 1.7;
+opacity: 0;
+animation: fadeUp 0.9s 0.7s forwards;
+}
+.hero-btns {
+margin-top: 48px;
+display: flex;
+gap: 16px;
+justify-content: center;
+flex-wrap: wrap;
+opacity: 0;
+animation: fadeUp 0.9s 0.9s forwards;
+}
+.btn-primary {
+background: var(–green-neon);
+color: var(–black);
+padding: 16px 40px;
+font-weight: 700;
+letter-spacing: 2px;
+text-transform: uppercase;
+font-size: 0.85rem;
+text-decoration: none;
+border-radius: 2px;
+transition: transform 0.2s, box-shadow 0.2s;
+display: inline-block;
+}
+.btn-primary:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 32px rgba(116,215,163,0.3);
+}
+.btn-outline {
+border: 1px solid rgba(245,240,232,0.3);
+color: var(–white);
+padding: 16px 40px;
+font-weight: 500;
+letter-spacing: 2px;
+text-transform: uppercase;
+font-size: 0.85rem;
+text-decoration: none;
+border-radius: 2px;
+transition: border-color 0.2s, background 0.2s;
+display: inline-block;
+}
+.btn-outline:hover { border-color: var(–green-neon); background: rgba(116,215,163,0.05); }
+
+.scroll-indicator {
+position: absolute;
+bottom: 40px;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+opacity: 0;
+animation: fadeUp 1s 1.5s forwards;
+}
+.scroll-indicator span {
+font-size: 0.65rem;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–gray-light);
+}
+.scroll-line {
+width: 1px;
+height: 50px;
+background: linear-gradient(to bottom, var(–green-neon), transparent);
+animation: scrollPulse 2s infinite;
+}
+
+/* MARQUEE */
+.marquee-section {
+border-top: 1px solid rgba(255,255,255,0.07);
+border-bottom: 1px solid rgba(255,255,255,0.07);
+overflow: hidden;
+padding: 20px 0;
+background: var(–green);
+}
+.marquee-track {
+display: flex;
+gap: 60px;
+animation: marquee 20s linear infinite;
+white-space: nowrap;
+}
+.marquee-item {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 1.5rem;
+letter-spacing: 4px;
+color: rgba(245,240,232,0.9);
+display: flex;
+align-items: center;
+gap: 24px;
+flex-shrink: 0;
+}
+.marquee-dot { color: var(–green-neon); font-size: 0.6rem; }
+
+/* MANIFESTE */
+#manifeste {
+padding: 120px 60px;
+max-width: 1200px;
+margin: 0 auto;
+}
+.section-tag {
+font-size: 0.7rem;
+letter-spacing: 5px;
+text-transform: uppercase;
+color: var(–green-neon);
+margin-bottom: 32px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.section-tag::before {
+content: ‘’;
+width: 30px;
+height: 1px;
+background: var(–green-neon);
+}
+.manifeste-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: start;
+}
+.manifeste-left h2 {
+font-family: ‘Bebas Neue’, cursive;
+font-size: clamp(3rem, 6vw, 5.5rem);
+line-height: 0.9;
+letter-spacing: 2px;
+margin-bottom: 40px;
+}
+.manifeste-left h2 em {
+color: var(–green-neon);
+font-style: normal;
+display: block;
+}
+.stat-row {
+display: flex;
+gap: 48px;
+margin-top: 48px;
+}
+.stat { }
+.stat-number {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 3.5rem;
+color: var(–green-neon);
+line-height: 1;
+}
+.stat-label {
+font-size: 0.75rem;
+color: var(–gray-light);
+letter-spacing: 1px;
+margin-top: 4px;
+}
+.manifeste-right p {
+font-size: 1.1rem;
+line-height: 1.9;
+color: rgba(245,240,232,0.7);
+margin-bottom: 24px;
+}
+.manifeste-right p strong {
+color: var(–white);
+font-weight: 600;
+}
+.values-list {
+margin-top: 40px;
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+.value-item {
+display: flex;
+align-items: center;
+gap: 16px;
+padding: 16px 20px;
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 4px;
+background: rgba(255,255,255,0.02);
+transition: border-color 0.3s, background 0.3s;
+}
+.value-item:hover {
+border-color: rgba(116,215,163,0.3);
+background: rgba(116,215,163,0.04);
+}
+.value-icon {
+font-size: 1.4rem;
+min-width: 36px;
+}
+.value-text h4 {
+font-size: 0.9rem;
+font-weight: 600;
+margin-bottom: 2px;
+}
+.value-text p {
+font-size: 0.78rem;
+color: var(–gray-light);
+margin: 0;
+line-height: 1.5;
+}
+
+/* PILLARS */
+#pillars {
+padding: 100px 60px;
+background: rgba(255,255,255,0.02);
+border-top: 1px solid rgba(255,255,255,0.05);
+border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.pillars-header {
+text-align: center;
+margin-bottom: 80px;
+}
+.pillars-header h2 {
+font-family: ‘Bebas Neue’, cursive;
+font-size: clamp(2.5rem, 5vw, 4.5rem);
+letter-spacing: 3px;
+}
+.pillars-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2px;
+max-width: 1200px;
+margin: 0 auto;
+}
+.pillar-card {
+padding: 60px 40px;
+border: 1px solid rgba(255,255,255,0.06);
+position: relative;
+overflow: hidden;
+transition: background 0.4s;
+background: var(–black);
+}
+.pillar-card:hover { background: rgba(45,106,79,0.08); }
+.pillar-card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 2px;
+background: var(–green-neon);
+transform: scaleX(0);
+transform-origin: left;
+transition: transform 0.4s;
+}
+.pillar-card:hover::before { transform: scaleX(1); }
+.pillar-num {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 4rem;
+color: rgba(116,215,163,0.12);
+line-height: 1;
+margin-bottom: 16px;
+}
+.pillar-icon { font-size: 2rem; margin-bottom: 20px; }
+.pillar-title {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 1.8rem;
+letter-spacing: 2px;
+margin-bottom: 16px;
+color: var(–white);
+}
+.pillar-desc {
+font-size: 0.88rem;
+line-height: 1.8;
+color: var(–gray-light);
+}
+
+/* PRODUCTS */
+#produits {
+padding: 120px 60px;
+max-width: 1400px;
+margin: 0 auto;
+}
+.products-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-end;
+margin-bottom: 64px;
+}
+.products-header h2 {
+font-family: ‘Bebas Neue’, cursive;
+font-size: clamp(3rem, 6vw, 5rem);
+letter-spacing: 2px;
+line-height: 0.9;
+}
+.products-header h2 span { color: var(–green-neon); }
+.products-header p {
+max-width: 300px;
+color: var(–gray-light);
+font-size: 0.88rem;
+line-height: 1.7;
+text-align: right;
+}
+
+/* PRODUCT TABS */
+.product-tabs {
+display: flex;
+gap: 4px;
+margin-bottom: 48px;
+border-bottom: 1px solid rgba(255,255,255,0.08);
+padding-bottom: 0;
+}
+.tab-btn {
+padding: 12px 28px;
+background: none;
+border: none;
+color: var(–gray-light);
+font-family: ‘Space Grotesk’, sans-serif;
+font-size: 0.8rem;
+letter-spacing: 2px;
+text-transform: uppercase;
+cursor: pointer;
+transition: color 0.2s;
+border-bottom: 2px solid transparent;
+margin-bottom: -1px;
+}
+.tab-btn.active {
+color: var(–green-neon);
+border-bottom-color: var(–green-neon);
+}
+.tab-btn:hover:not(.active) { color: var(–white); }
+
+.product-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 20px;
+}
+.product-card {
+background: rgba(255,255,255,0.025);
+border: 1px solid rgba(255,255,255,0.06);
+border-radius: 4px;
+overflow: hidden;
+transition: transform 0.3s, border-color 0.3s;
+position: relative;
+}
+.product-card:hover {
+transform: translateY(-6px);
+border-color: rgba(116,215,163,0.3);
+}
+.product-visual {
+height: 200px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 4rem;
+position: relative;
+overflow: hidden;
+}
+.product-visual::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+opacity: 0.15;
+}
+.card-wellness .product-visual { background: linear-gradient(135deg, #1a3a2a, #2d6a4f); }
+.card-wellness .product-visual::before { background: radial-gradient(circle at 50% 50%, var(–green-light), transparent); }
+.card-protein .product-visual { background: linear-gradient(135deg, #1a2a3a, #2d4a6a); }
+.card-protein .product-visual::before { background: radial-gradient(circle at 50% 50%, #52a0b7, transparent); }
+.card-badge {
+position: absolute;
+top: 12px; right: 12px;
+background: var(–green-neon);
+color: var(–black);
+font-size: 0.6rem;
+font-weight: 700;
+letter-spacing: 2px;
+padding: 4px 10px;
+border-radius: 2px;
+text-transform: uppercase;
+}
+.product-info {
+padding: 24px;
+}
+.product-category {
+font-size: 0.65rem;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–green-light);
+margin-bottom: 8px;
+}
+.product-name {
+font-weight: 600;
+font-size: 1rem;
+margin-bottom: 8px;
+color: var(–white);
+}
+.product-desc {
+font-size: 0.78rem;
+color: var(–gray-light);
+line-height: 1.6;
+margin-bottom: 16px;
+}
+.product-footer {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.product-price {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 1.5rem;
+color: var(–green-neon);
+}
+.product-price small {
+font-family: ‘Space Grotesk’, sans-serif;
+font-size: 0.7rem;
+color: var(–gray-light);
+display: block;
+font-weight: 400;
+line-height: 1;
+margin-top: 2px;
+}
+.add-btn {
+background: rgba(116,215,163,0.1);
+border: 1px solid rgba(116,215,163,0.3);
+color: var(–green-neon);
+padding: 8px 16px;
+font-size: 0.75rem;
+font-family: ‘Space Grotesk’, sans-serif;
+cursor: pointer;
+letter-spacing: 1px;
+border-radius: 2px;
+transition: background 0.2s, border-color 0.2s;
+}
+.add-btn:hover { background: rgba(116,215,163,0.2); border-color: var(–green-neon); }
+
+/* TABS CONTENT */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* DISCIPLINE SECTION */
+#discipline {
+padding: 120px 60px;
+background: var(–green);
+position: relative;
+overflow: hidden;
+}
+#discipline::before {
+content: ‘DISCIPLINE’;
+position: absolute;
+font-family: ‘Bebas Neue’, cursive;
+font-size: 20vw;
+color: rgba(0,0,0,0.15);
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+pointer-events: none;
+white-space: nowrap;
+}
+.discipline-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 80px;
+align-items: center;
+max-width: 1200px;
+margin: 0 auto;
+position: relative;
+z-index: 2;
+}
+.discipline-left h2 {
+font-family: ‘Bebas Neue’, cursive;
+font-size: clamp(3rem, 6vw, 5.5rem);
+line-height: 0.9;
+letter-spacing: 2px;
+color: var(–cream);
+margin-bottom: 32px;
+}
+.discipline-left p {
+color: rgba(237,232,221,0.75);
+font-size: 1.05rem;
+line-height: 1.8;
+margin-bottom: 40px;
+}
+.routine-cards {
+display: flex;
+flex-direction: column;
+gap: 16px;
+}
+.routine-card {
+background: rgba(0,0,0,0.2);
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 4px;
+padding: 20px 24px;
+display: flex;
+gap: 20px;
+align-items: flex-start;
+backdrop-filter: blur(10px);
+transition: background 0.3s;
+}
+.routine-card:hover { background: rgba(0,0,0,0.35); }
+.routine-time {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 1.3rem;
+color: var(–green-neon);
+min-width: 60px;
+}
+.routine-content h4 {
+font-size: 0.9rem;
+font-weight: 600;
+color: var(–cream);
+margin-bottom: 4px;
+}
+.routine-content p {
+font-size: 0.78rem;
+color: rgba(237,232,221,0.6);
+line-height: 1.5;
+margin: 0;
+}
+
+/* QUOTES */
+#quotes {
+padding: 100px 60px;
+text-align: center;
+border-top: 1px solid rgba(255,255,255,0.05);
+}
+.quote-container {
+max-width: 900px;
+margin: 0 auto;
+}
+.quote-text {
+font-family: ‘Italiana’, serif;
+font-size: clamp(1.8rem, 4vw, 3.2rem);
+line-height: 1.3;
+color: var(–white);
+margin-bottom: 32px;
+position: relative;
+}
+.quote-text::before {
+content: ‘”’;
+font-size: 8rem;
+color: var(–green-neon);
+opacity: 0.2;
+position: absolute;
+top: -30px;
+left: -30px;
+font-family: ‘Italiana’, serif;
+line-height: 1;
+}
+.quote-author {
+font-size: 0.75rem;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–green-neon);
+}
+.quote-dots {
+display: flex;
+gap: 8px;
+justify-content: center;
+margin-top: 40px;
+}
+.quote-dot {
+width: 8px; height: 8px;
+border-radius: 50%;
+background: rgba(255,255,255,0.2);
+cursor: pointer;
+transition: background 0.2s, transform 0.2s;
+}
+.quote-dot.active { background: var(–green-neon); transform: scale(1.3); }
+
+/* NEWSLETTER */
+#newsletter {
+padding: 100px 60px;
+background: rgba(45,106,79,0.08);
+border-top: 1px solid rgba(45,106,79,0.2);
+border-bottom: 1px solid rgba(45,106,79,0.2);
+text-align: center;
+}
+.newsletter-content {
+max-width: 600px;
+margin: 0 auto;
+}
+.newsletter-content h2 {
+font-family: ‘Bebas Neue’, cursive;
+font-size: clamp(2.5rem, 5vw, 4.5rem);
+letter-spacing: 2px;
+margin-bottom: 16px;
+}
+.newsletter-content h2 span { color: var(–green-neon); }
+.newsletter-content p {
+color: var(–gray-light);
+font-size: 0.95rem;
+line-height: 1.7;
+margin-bottom: 40px;
+}
+.newsletter-form {
+display: flex;
+gap: 8px;
+max-width: 480px;
+margin: 0 auto;
+}
+.newsletter-input {
+flex: 1;
+background: rgba(255,255,255,0.05);
+border: 1px solid rgba(255,255,255,0.12);
+color: var(–white);
+padding: 16px 20px;
+font-family: ‘Space Grotesk’, sans-serif;
+font-size: 0.9rem;
+border-radius: 2px;
+outline: none;
+transition: border-color 0.2s;
+}
+.newsletter-input:focus { border-color: var(–green-neon); }
+.newsletter-input::placeholder { color: var(–gray-light); }
+
+/* FOOTER */
+footer {
+padding: 80px 60px 40px;
+border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-grid {
+display: grid;
+grid-template-columns: 2fr 1fr 1fr 1fr;
+gap: 60px;
+margin-bottom: 60px;
+}
+.footer-brand p {
+color: var(–gray-light);
+font-size: 0.85rem;
+line-height: 1.7;
+margin-top: 16px;
+max-width: 260px;
+}
+.footer-logo {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 2.5rem;
+letter-spacing: 4px;
+color: var(–green-neon);
+}
+.footer-col h4 {
+font-size: 0.7rem;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–white);
+margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+margin-bottom: 12px;
+}
+.footer-col ul li a {
+color: var(–gray-light);
+text-decoration: none;
+font-size: 0.85rem;
+transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(–green-neon); }
+.footer-bottom {
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-top: 1px solid rgba(255,255,255,0.06);
+padding-top: 32px;
+}
+.footer-bottom p {
+color: var(–gray-light);
+font-size: 0.78rem;
+}
+.social-links {
+display: flex;
+gap: 20px;
+}
+.social-link {
+width: 36px; height: 36px;
+border: 1px solid rgba(255,255,255,0.12);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(–gray-light);
+text-decoration: none;
+font-size: 0.8rem;
+transition: border-color 0.2s, color 0.2s;
+}
+.social-link:hover { border-color: var(–green-neon); color: var(–green-neon); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+@keyframes marquee {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+@keyframes scrollPulse {
+0%, 100% { opacity: 1; transform: scaleY(1); }
+50% { opacity: 0.4; transform: scaleY(0.7); }
+}
+
+.reveal {
+opacity: 0;
+transform: translateY(40px);
+transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+opacity: 1;
+transform: none;
+}
+
+/* MODAL / NOTIFICATION */
+.toast {
+position: fixed;
+bottom: 40px;
+right: 40px;
+background: var(–green);
+color: var(–white);
+padding: 16px 24px;
+border-radius: 4px;
+font-size: 0.85rem;
+font-weight: 500;
+z-index: 9999;
+display: flex;
+align-items: center;
+gap: 12px;
+transform: translateY(80px);
+opacity: 0;
+transition: transform 0.3s, opacity 0.3s;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-icon { font-size: 1.2rem; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+nav { padding: 20px 24px; }
+.nav-links { display: none; }
+#manifeste { padding: 80px 24px; }
+.manifeste-grid { grid-template-columns: 1fr; gap: 48px; }
+#pillars { padding: 80px 24px; }
+.pillars-grid { grid-template-columns: 1fr; }
+#produits { padding: 80px 24px; }
+.product-grid { grid-template-columns: 1fr 1fr; }
+.products-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+.products-header p { text-align: left; }
+#discipline { padding: 80px 24px; }
+.discipline-grid { grid-template-columns: 1fr; gap: 48px; }
+#quotes { padding: 80px 24px; }
+#newsletter { padding: 80px 24px; }
+.newsletter-form { flex-direction: column; }
+footer { padding: 60px 24px 32px; }
+.footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+.footer-bottom { flex-direction: column; gap: 20px; }
+}
+@media (max-width: 600px) {
+.product-grid { grid-template-columns: 1fr; }
+.footer-grid { grid-template-columns: 1fr; }
+.stat-row { gap: 24px; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- Cursor -->
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<!-- Toast -->
+
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toastMsg">Ajouté au panier !</span>
+</div>
+
+<!-- NAV -->
+
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">RISE UP</a>
+  <ul class="nav-links">
+    <li><a href="#manifeste">Notre Mission</a></li>
+    <li><a href="#pillars">Piliers</a></li>
+    <li><a href="#produits">Produits</a></li>
+    <li><a href="#discipline">Routine</a></li>
+    <li><a href="#newsletter" class="nav-cta">Rejoindre</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">🌱 Bien-être · Discipline · Force</p>
+    <h1 class="hero-title">
+      RISE
+      <span>UP</span>
+    </h1>
+    <p class="hero-sub">Tu n'attends pas que la vie change.<br>Tu te lèves, tu agis, tu deviens.</p>
+    <div class="hero-btns">
+      <a href="#produits" class="btn-primary">Découvrir nos produits</a>
+      <a href="#manifeste" class="btn-outline">Notre mission</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack">
+    <div class="marquee-item">DISCIPLINE <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">BIEN-ÊTRE NATUREL <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">PROTÉINES VÉGÉTALES <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">FORCE MENTALE <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">100% VEGAN <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">FAIT POUR LES JEUNES <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">RISE UP <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">DISCIPLINE <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">BIEN-ÊTRE NATUREL <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">PROTÉINES VÉGÉTALES <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">FORCE MENTALE <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">100% VEGAN <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">FAIT POUR LES JEUNES <span class="marquee-dot">◆</span></div>
+    <div class="marquee-item">RISE UP <span class="marquee-dot">◆</span></div>
+  </div>
+</div>
+
+<!-- MANIFESTE -->
+
+<section id="manifeste">
+  <div class="section-tag">Notre histoire</div>
+  <div class="manifeste-grid">
+    <div class="manifeste-left reveal">
+      <h2>Créé par<em>des jeunes</em>pour les jeunes.</h2>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Ingrédients naturels</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Compromis sur la qualité</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Potentiel en toi</div>
+        </div>
+      </div>
+    </div>
+    <div class="manifeste-right reveal">
+      <p>
+        RISE UP est né d'une conviction simple : <strong>nos jeunes méritent mieux</strong>. Mieux que des produits bourrés de chimie. Mieux que des discours vides. Mieux qu'une culture qui les décourage.
+      </p>
+      <p>
+        On a créé une marque qui <strong>te ressemble</strong> — des soins capillaires naturels, des compléments végétaux, et une philosophie de vie bâtie sur la discipline, la constance et le respect de soi.
+      </p>
+      <p>
+        Parce que prendre soin de ton corps, c'est aussi prendre soin de ton mental.
+      </p>
+      <div class="values-list">
+        <div class="value-item">
+          <div class="value-icon">🌿</div>
+          <div class="value-text">
+            <h4>Ingrédients éthiques</h4>
+            <p>Formules véganes, sans sulfates, sans paraffine. Respectueux de ton corps et de la planète.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">💪</div>
+          <div class="value-text">
+            <h4>Protéines 100% végétales</h4>
+            <p>Pois, chanvre, riz brun — la force sans compromettre tes valeurs.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🧠</div>
+          <div class="value-text">
+            <h4>Mindset avant tout</h4>
+            <p>On ne vend pas juste des produits. On construit une communauté de jeunes qui se lèvent.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+
+<section id="pillars">
+  <div class="pillars-header reveal">
+    <div class="section-tag" style="justify-content:center">Ce qu'on défend</div>
+    <h2>LES 3 PILIERS<br>RISE UP</h2>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-card reveal">
+      <div class="pillar-num">01</div>
+      <div class="pillar-icon">🌱</div>
+      <h3 class="pillar-title">Corps Sain</h3>
+      <p class="pillar-desc">
+        Des soins capillaires formulés avec des actifs naturels — beurre de karité, huile d'argan, aloe vera. Des protéines végétales complètes pour nourrir ta force de l'intérieur. Parce que ce que tu mets sur et dans ton corps compte.
+      </p>
+    </div>
+    <div class="pillar-card reveal">
+      <div class="pillar-num">02</div>
+      <div class="pillar-icon">🧠</div>
+      <h3 class="pillar-title">Mental Fort</h3>
+      <p class="pillar-desc">
+        La discipline ne se construit pas en un jour. On te donne les outils : routines guidées, méthodes de concentration, gestion du stress. Un mental solide, ça se travaille comme un muscle.
+      </p>
+    </div>
+    <div class="pillar-card reveal">
+      <div class="pillar-num">03</div>
+      <div class="pillar-icon">🔥</div>
+      <h3 class="pillar-title">Communauté</h3>
+      <p class="pillar-desc">
+        Tu n'es pas seul. RISE UP c'est un mouvement — des jeunes qui s'entraident, se challengent et s'élèvent ensemble. Rejoins des milliers de personnes qui ont décidé de se lever chaque matin avec intention.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+
+<section id="produits">
+  <div class="products-header reveal">
+    <h2>NOS<br><span>PRODUITS</span></h2>
+    <p>Formulés naturellement, pensés pour toi. Chaque produit est un acte de respect envers ton corps.</p>
+  </div>
+
+  <div class="product-tabs">
+    <button class="tab-btn active" onclick="switchTab('soin')">🌿 Soins & Capillaires</button>
+    <button class="tab-btn" onclick="switchTab('protein')">💪 Protéines Végétales</button>
+    <button class="tab-btn" onclick="switchTab('complements')">⚡ Compléments</button>
+  </div>
+
+  <!-- SOIN TAB -->
+
+  <div class="tab-panel active" id="tab-soin">
+    <div class="product-grid">
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">
+          🧴
+          <span class="card-badge">Bestseller</span>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Capillaire</div>
+          <div class="product-name">Shampoing Frais Menthe & Aloe</div>
+          <div class="product-desc">Formule légère, sans sulfates. Purifie le cuir chevelu et apporte une fraîcheur longue durée.</div>
+          <div class="product-footer">
+            <div class="product-price">12.90€ <small>250ml</small></div>
+            <button class="add-btn" onclick="addToCart('Shampoing Frais')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">🫧</div>
+        <div class="product-info">
+          <div class="product-category">Capillaire</div>
+          <div class="product-name">Après-Shampoing Revitalisant</div>
+          <div class="product-desc">Kératine végétale + huile de coco. Démêle, nourrit et protège sans alourdir.</div>
+          <div class="product-footer">
+            <div class="product-price">13.90€ <small>250ml</small></div>
+            <button class="add-btn" onclick="addToCart('Après-Shampoing')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">✨</div>
+        <div class="product-info">
+          <div class="product-category">Soin Visage</div>
+          <div class="product-name">Gel Nettoyant Peau Nette</div>
+          <div class="product-desc">Nettoyant doux à l'eau de rose et zinc. Purifie sans dessécher, idéal peau mixte à grasse.</div>
+          <div class="product-footer">
+            <div class="product-price">11.90€ <small>150ml</small></div>
+            <button class="add-btn" onclick="addToCart('Gel Nettoyant')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">
+          🌿
+          <span class="card-badge">Nouveau</span>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Corps</div>
+          <div class="product-name">Huile Corps Revitalisante</div>
+          <div class="product-desc">Mélange d'huile d'argan, jojoba et vitamine E. Hydrate en profondeur, peau douce dès la 1ère utilisation.</div>
+          <div class="product-footer">
+            <div class="product-price">18.90€ <small>100ml</small></div>
+            <button class="add-btn" onclick="addToCart('Huile Corps')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROTEIN TAB -->
+
+  <div class="tab-panel" id="tab-protein">
+    <div class="product-grid">
+      <div class="product-card card-protein reveal">
+        <div class="product-visual">
+          💪
+          <span class="card-badge">Pro</span>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Protéine Végétale</div>
+          <div class="product-name">Whey Végétale Chocolat Noir</div>
+          <div class="product-desc">25g de protéines par dose. Isolat de pois + riz brun. Sans lactose, sans gluten, goût premium.</div>
+          <div class="product-footer">
+            <div class="product-price">34.90€ <small>500g · 20 doses</small></div>
+            <button class="add-btn" onclick="addToCart('Whey Végétale Chocolat')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-protein reveal">
+        <div class="product-visual">🍌</div>
+        <div class="product-info">
+          <div class="product-category">Protéine Végétale</div>
+          <div class="product-name">Shake Banane Vanille</div>
+          <div class="product-desc">22g de protéines. Chanvre + pois. Parfait post-entraînement, digestion facile.</div>
+          <div class="product-footer">
+            <div class="product-price">31.90€ <small>500g · 20 doses</small></div>
+            <button class="add-btn" onclick="addToCart('Shake Banane Vanille')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-protein reveal">
+        <div class="product-visual">
+          🥤
+          <span class="card-badge">Nouveau</span>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Barres Protéinées</div>
+          <div class="product-name">Barre RISE Cacahuète</div>
+          <div class="product-desc">15g de protéines végétales par barre. Sucre réduit, fibres élevées. Snack sain et rassasiant.</div>
+          <div class="product-footer">
+            <div class="product-price">2.90€ <small>par barre · Pack ×12</small></div>
+            <button class="add-btn" onclick="addToCart('Barre RISE Cacahuète')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-protein reveal">
+        <div class="product-visual">🌿</div>
+        <div class="product-info">
+          <div class="product-category">Protéine Végétale</div>
+          <div class="product-name">Gainer Nature Vert</div>
+          <div class="product-desc">Pour prise de masse propre. 40g protéines + glucides complexes. Spiruline & chlorella inclus.</div>
+          <div class="product-footer">
+            <div class="product-price">39.90€ <small>1kg · 20 doses</small></div>
+            <button class="add-btn" onclick="addToCart('Gainer Nature Vert')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLEMENTS TAB -->
+
+  <div class="tab-panel" id="tab-complements">
+    <div class="product-grid">
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">⚡</div>
+        <div class="product-info">
+          <div class="product-category">Énergie</div>
+          <div class="product-name">Pre-Workout Matcha Citron</div>
+          <div class="product-desc">Caféine naturelle du thé vert + L-théanine. Énergie propre sans crash. Concentration maximale.</div>
+          <div class="product-footer">
+            <div class="product-price">24.90€ <small>200g · 30 doses</small></div>
+            <button class="add-btn" onclick="addToCart('Pre-Workout Matcha')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">
+          🌙
+          <span class="card-badge">Top</span>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Récupération</div>
+          <div class="product-name">Sleep & Recover</div>
+          <div class="product-desc">Magnésium bisglycinate + ashwagandha + mélatonine végétale. Sommeil profond, récupération optimale.</div>
+          <div class="product-footer">
+            <div class="product-price">22.90€ <small>60 gélules</small></div>
+            <button class="add-btn" onclick="addToCart('Sleep & Recover')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">🫀</div>
+        <div class="product-info">
+          <div class="product-category">Immunité</div>
+          <div class="product-name">Vitamines D3 + K2 Vegan</div>
+          <div class="product-desc">Combo essentiel pour os, immunité et humeur. Source algue D3 — 100% végétalien.</div>
+          <div class="product-footer">
+            <div class="product-price">16.90€ <small>90 gélules</small></div>
+            <button class="add-btn" onclick="addToCart('D3 + K2 Vegan')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card card-wellness reveal">
+        <div class="product-visual">🌺</div>
+        <div class="product-info">
+          <div class="product-category">Focus</div>
+          <div class="product-name">Brain Boost Rhodiola</div>
+          <div class="product-desc">Adaptogènes naturels — rhodiola, bacopa, ginkgo. Clarté mentale, mémoire, anti-stress.</div>
+          <div class="product-footer">
+            <div class="product-price">27.90€ <small>60 gélules</small></div>
+            <button class="add-btn" onclick="addToCart('Brain Boost')">+ Ajouter</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCIPLINE -->
+
+<section id="discipline">
+  <div class="discipline-grid">
+    <div class="discipline-left reveal">
+      <h2>LA ROUTINE<br>QUI<br>CHANGE TOUT</h2>
+      <p>
+        La discipline c'est pas se priver. C'est se respecter assez pour faire les choses qui comptent, même quand t'as pas envie.
+      </p>
+      <a href="#newsletter" class="btn-primary" style="display:inline-block">Télécharger le guide gratuit</a>
+    </div>
+    <div class="routine-cards reveal">
+      <div class="routine-card">
+        <div class="routine-time">5H30</div>
+        <div class="routine-content">
+          <h4>🌅 Réveil & Hydratation</h4>
+          <p>Un verre d'eau citronné, 5 min de respiration. Ton corps et ton mental se réveillent ensemble.</p>
+        </div>
+      </div>
+      <div class="routine-card">
+        <div class="routine-time">6H00</div>
+        <div class="routine-content">
+          <h4>💪 Mouvement</h4>
+          <p>30 min d'activité — course, musculation, yoga. Le mouvement libère les endorphines, démarre ta journée en force.</p>
+        </div>
+      </div>
+      <div class="routine-card">
+        <div class="routine-time">6H45</div>
+        <div class="routine-content">
+          <h4>🧴 Soins & Rituel Corps</h4>
+          <p>Shampoing RISE UP, gel nettoyant, hydratation. Prendre soin de toi c'est un acte de discipline.</p>
+        </div>
+      </div>
+      <div class="routine-card">
+        <div class="routine-time">7H15</div>
+        <div class="routine-content">
+          <h4>🥤 Nutrition & Protéines</h4>
+          <p>Shake protéiné végétal, petit-déjeuner équilibré. Nourris ton corps pour la journée qui t'attend.</p>
+        </div>
+      </div>
+      <div class="routine-card">
+        <div class="routine-time">7H30</div>
+        <div class="routine-content">
+          <h4>📖 Intention du jour</h4>
+          <p>3 objectifs écrits. Une chose pour laquelle tu es reconnaissant. Tu sors prêt à conquérir ta journée.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+
+<section id="quotes">
+  <div class="section-tag" style="justify-content:center;margin-bottom:60px">Ils se sont levés</div>
+  <div class="quote-container reveal">
+    <div class="quote-text" id="quoteText">
+      La discipline est le pont entre les objectifs et les accomplissements.
+    </div>
+    <div class="quote-author" id="quoteAuthor">— Jim Rohn</div>
+    <div class="quote-dots">
+      <div class="quote-dot active" onclick="setQuote(0)"></div>
+      <div class="quote-dot" onclick="setQuote(1)"></div>
+      <div class="quote-dot" onclick="setQuote(2)"></div>
+      <div class="quote-dot" onclick="setQuote(3)"></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+
+<section id="newsletter">
+  <div class="newsletter-content reveal">
+    <div class="section-tag" style="justify-content:center;margin-bottom:24px">La communauté</div>
+    <h2>REJOINS LE<br><span>MOUVEMENT</span></h2>
+    <p>Guide de routine matinale offert + 10% sur ta première commande. Rejoins des milliers de jeunes qui se lèvent chaque jour avec intention.</p>
+    <div class="newsletter-form">
+      <input type="email" class="newsletter-input" placeholder="ton@email.com" id="emailInput">
+      <button class="btn-primary" onclick="subscribe()">Je rejoins</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">RISE UP</div>
+      <p>Une marque née pour les jeunes qui choisissent de se lever. Bien-être naturel, discipline, communauté.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Produits</h4>
+      <ul>
+        <li><a href="#produits">Soins Capillaires</a></li>
+        <li><a href="#produits">Protéines Végétales</a></li>
+        <li><a href="#produits">Compléments</a></li>
+        <li><a href="#produits">Packs Découverte</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>La Marque</h4>
+      <ul>
+        <li><a href="#manifeste">Notre Mission</a></li>
+        <li><a href="#pillars">Nos Valeurs</a></li>
+        <li><a href="#discipline">Routine RISE</a></li>
+        <li><a href="#newsletter">Communauté</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Livraisons</a></li>
+        <li><a href="#">Retours</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 RISE UP. Tous droits réservés. Fait avec 🌿 pour nos jeunes.</p>
+    <div class="social-links">
+      <a href="#" class="social-link">▶</a>
+      <a href="#" class="social-link">📷</a>
+      <a href="#" class="social-link">🎵</a>
+      <a href="#" class="social-link">✉</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('cursorTrail');
+  let mx = 0, my = 0, tx = 0, ty = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top = my - 6 + 'px';
+  });
+  setInterval(() => {
+    tx += (mx - tx) * 0.15;
+    ty += (my - ty) * 0.15;
+    trail.style.left = tx - 16 + 'px';
+    trail.style.top = ty - 16 + 'px';
+  }, 16);
+
+  // NAV SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // REVEAL ON SCROLL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // TABS
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.querySelectorAll('#tab-' + tab + ' .reveal').forEach(el => {
+      el.classList.remove('visible');
+      setTimeout(() => el.classList.add('visible'), 100);
+    });
+  }
+
+  // TOAST
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ADD TO CART
+  function addToCart(name) {
+    showToast(`✓ ${name} ajouté au panier !`);
+  }
+
+  // NEWSLETTER
+  function subscribe() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) {
+      showToast('Entre un email valide 🙏');
+      return;
+    }
+    document.getElementById('emailInput').value = '';
+    showToast('🎉 Bienvenue dans le mouvement RISE UP !');
+  }
+
+  // QUOTES
+  const quotes = [
+    { text: 'La discipline est le pont entre les objectifs et les accomplissements.', author: '— Jim Rohn' },
+    { text: 'Tu n\'as pas à être parfait. Tu as juste à te lever chaque matin et décider de te battre.', author: '— Rise Up' },
+    { text: 'Le succès n\'est pas final, l\'échec n\'est pas fatal : c\'est le courage de continuer qui compte.', author: '— Winston Churchill' },
+    { text: 'Prends soin de ton corps. C\'est le seul endroit où tu sois obligé de vivre.', author: '— Jim Rohn' },
+  ];
+  let currentQuote = 0;
+
+  function setQuote(i) {
+    currentQuote = i;
+    const qt = document.getElementById('quoteText');
+    const qa = document.getElementById('quoteAuthor');
+    qt.style.opacity = 0;
+    qa.style.opacity = 0;
+    setTimeout(() => {
+      qt.textContent = quotes[i].text;
+      qa.textContent = quotes[i].author;
+      qt.style.opacity = 1;
+      qa.style.opacity = 1;
+    }, 300);
+    document.querySelectorAll('.quote-dot').forEach((d, j) => {
+      d.classList.toggle('active', j === i);
+    });
+  }
+  setInterval(() => setQuote((currentQuote + 1) % quotes.length), 5000);
+
+  // Smooth opacity for quotes
+  document.getElementById('quoteText').style.transition = 'opacity 0.4s';
+  document.getElementById('quoteAuthor').style.transition = 'opacity 0.4s';
+
+  // Initial reveal for hero elements (already animated via CSS)
+  // Trigger tab-soin reveals on load
+  setTimeout(() => {
+    document.querySelectorAll('#tab-soin .reveal').forEach(el => el.classList.add('visible'));
+  }, 300);
+</script>
+
+</body>
+</html>
